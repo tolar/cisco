@@ -19,26 +19,21 @@ public class GraphProcessorImpl implements GraphProcessor {
 
     public List<List<GNode>> paths(GNode start) {
         final List<List<GNode>> result = new ArrayList<List<GNode>>();
-        paths(start, start, new ArrayList<GNode>(), result);
+        paths(start, new ArrayList<GNode>(), result);
         return result;
     }
 
-    private void paths(GNode start, GNode current, ArrayList<GNode> currentPath, List<List<GNode>> result) {
-
+    private void paths(GNode current, ArrayList<GNode> currentPath, List<List<GNode>> result) {
         currentPath.add(current);
-
         if (current.getChildren().length > 0) {
-            // there are
+            // there are children
             for (GNode child : current.getChildren()) {
-                paths(start, child, currentPath, result);
+                ArrayList<GNode> currentPathForChild = (ArrayList<GNode>) currentPath.clone();
+                paths(child, currentPathForChild, result);
             }
         } else {
             // we have reached a leaf
-            ArrayList<GNode> foundPath = (ArrayList<GNode>) currentPath.clone();
-            result.add(foundPath);
+            result.add(currentPath);
         }
-
-
-
     }
 }
